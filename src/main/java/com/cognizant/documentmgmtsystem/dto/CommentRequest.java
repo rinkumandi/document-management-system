@@ -7,13 +7,8 @@ import lombok.Setter;
 @Getter
 @Setter
 @Builder
-public class CommentDTO {
-    private Long id;
-    //private Long postId;
+public class CommentRequest {
     private String name;
     private String email;
     private String body;
-
-    private Long fileId;
-
 }

@@ -1,6 +1,7 @@
 package com.cognizant.documentmgmtsystem.controller;
 
 import com.cognizant.documentmgmtsystem.dto.CommentDTO;
+import com.cognizant.documentmgmtsystem.dto.CommentRequest;
 import com.cognizant.documentmgmtsystem.dto.PostDTO;
 import com.cognizant.documentmgmtsystem.dto.PostRequest;
 import com.cognizant.documentmgmtsystem.service.CommentService;
@@ -56,10 +57,9 @@ public class PostCommentController {
     @PostMapping("/{fileId}/comments")
     public ResponseEntity<CommentDTO> createComment(
             @PathVariable("fileId") Long fileId,
-            @RequestBody @Valid CommentDTO commentDTO
-    ) {
+            @RequestBody @Valid CommentRequest commentRequest) {
         // Associate the comment with the specified document
-        commentDTO.setFileId(fileId);
+        final CommentDTO commentDTO = buildCommentDto(fileId, commentRequest);
         try {
             final CommentDTO response = commentService.createComment(commentDTO);
             return new ResponseEntity<>(response, HttpStatus.CREATED);
@@ -67,6 +67,15 @@ public class PostCommentController {
             log.error("Couldn't create comment duel to {}", e.getMessage());
             return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
         }
+    }
+
+    private static CommentDTO buildCommentDto(Long fileId, CommentRequest commentRequest) {
+        return CommentDTO.builder()
+                .fileId(fileId)
+                .name(commentRequest.getName())
+                .email(commentRequest.getEmail())
+                .body(commentRequest.getBody())
+                .build();
     }
 
     private static PostDTO buildPostDto(Long fileId, PostRequest postRequest) {

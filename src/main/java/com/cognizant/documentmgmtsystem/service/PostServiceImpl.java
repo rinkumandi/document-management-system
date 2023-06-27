@@ -34,14 +34,22 @@ public class PostServiceImpl implements PostService {
         final FileEntity fileEntity = fileRepository.findById(createdPost.getFileId())
                 .orElseThrow(FileNotFoundException::new);
         final PostEntity postEntity = buildPostEntity(createdPost, fileEntity);
-
-        final PostEntity savedPostEntity = postRepository.save(postEntity);
-
+        final List<PostEntity> postEntityList = postRepository.findByFile(fileEntity);
+        PostEntity savedPostEntity;
+        if(postEntityList.isEmpty()) {
+            savedPostEntity = postRepository.save(postEntity);
+        } else {
+            final PostEntity postEntity1 = postEntityList.get(0);
+            postEntity1.setBody(postEntity.getBody());
+            postEntity1.setFile(postEntity.getFile());
+            postEntity1.setTitle(postEntity.getTitle());
+            savedPostEntity = postRepository.save(postEntity1);
+        }
         return buildPostDTO(savedPostEntity);
     }
 
     @Override
-    public List<PostDTO> getPostsByFile(Long fileId) throws FileNotFoundException {
+    public List<PostDTO> getPostsByFile(final Long fileId) throws FileNotFoundException {
         final FileEntity fileEntity = fileRepository.findById(fileId)
                 .orElseThrow(FileNotFoundException::new);
         final List<PostEntity> postEntityList = postRepository.findByFile(fileEntity);

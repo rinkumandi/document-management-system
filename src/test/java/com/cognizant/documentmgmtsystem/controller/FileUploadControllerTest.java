@@ -1,4 +1,4 @@
-package com.cognizant.documentmgmtsystem;
+package com.cognizant.documentmgmtsystem.controller;
 
 import com.cognizant.documentmgmtsystem.controller.FileUploadController;
 import com.cognizant.documentmgmtsystem.entity.FileEntity;
