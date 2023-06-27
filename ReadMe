@@ -1,1 +1,31 @@
-http://localhost:8080/h2-console
+In order to run this project you would need java 11 and Gradle 6.9.4
+
+H2 console url- http://localhost:8080/h2-console
+
+Run gradle build command from your terminal and then start your server.
+
+It exposes below endpoints:
+
+upload file:
+POST: http://localhost:8080/files
+
+To hit this api from postman, you would need to upload a file. Follow steps below to do that
+select body -> form-data - it would ask for key value
+file will be the key in value there is a drop down that you need to change from text to file.
+once you will do that, it will give you a button to select a file. select the file that you want to upload
+and then finally click on the send button.
+
+Get all files:
+GET: http://localhost:8080/files
+
+Delete an already uploaded file:
+DELETE: http://localhost:8080/files/2 (where 2 is the id of the file that you want to delete.)
+
+Create post:
+POST: http://localhost:8080/documents/2/posts
+
+Get Post for give file:
+GET: http://localhost:8080/documents/2/posts
+
+Create comment:
+POST: http://localhost:8080/documents/1/comments
